@@ -7,8 +7,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public class PEP3T_3_JCR {
-    private static DocumentBuilderFactory factoriaDoc;
-    private static DocumentBuilder constructDoc;
     private static Document docDOM;
 
     public static void main(String[] args) {
@@ -16,8 +14,8 @@ public class PEP3T_3_JCR {
         int opcion;
         File fichXML = new File("src/peliculas.xml");
         try {
-            factoriaDoc = DocumentBuilderFactory.newInstance();
-            constructDoc = factoriaDoc.newDocumentBuilder();
+            DocumentBuilderFactory factoriaDoc = DocumentBuilderFactory.newInstance();
+            DocumentBuilder constructDoc = factoriaDoc.newDocumentBuilder();
             docDOM = constructDoc.parse(fichXML);
 
         } catch (Exception e) {
@@ -25,15 +23,15 @@ public class PEP3T_3_JCR {
         }
 
         do {
-            System.out.println("==========================");
-            System.out.println("PROGRAMA GESTIÓN PELÍCULAS");
-            System.out.println("==========================");
+            System.out.println("\033[1m\n\t\t==========================");
+            System.out.println("\t\tPROGRAMA GESTIÓN PELÍCULAS");
+            System.out.println("\t\t==========================\n");
             System.out.println("1) Presentar el documento XML completo");
             System.out.println("2) Añadir nuevo nodo al documento");
             System.out.println("3) Modificar datos de un nodo del documento");
             System.out.println("4) Eliminar un nodo concreto del documento");
-            System.out.println("5) Salir");
-            System.out.print("Opción: ");
+            System.out.println("5) Salir\n");
+            System.out.print("\t\t\t\tOpción: \033[0m");
             opcion = scanner.nextInt();
 
             switch (opcion) {
@@ -71,21 +69,24 @@ public class PEP3T_3_JCR {
         int opcion;
 
         do {
-            System.out.println("1) Insertar nodo al principio del documento");
+            System.out.println("\033[1m\n1) Insertar nodo al principio del documento");
             System.out.println("2) Insertar nodo en posiciones intermedias del documento");
             System.out.println("3) Insertar nodo al final del documento");
             System.out.println("4) Volver al menú principal");
-            System.out.print("Opción: ");
+            System.out.print("\t\t\t\tOpción: \033[0m");
             opcion = scanner.nextInt();
 
             switch (opcion) {
                 case 1:
+                    System.out.println();
                     insertarNodoAlPrincipio();
                     break;
                 case 2:
+                    System.out.println();
                     insertarNodoEnPosicionesIntermedias();
                     break;
                 case 3:
+                    System.out.println();
                     insertarNodoAlFinal();
                     break;
             }
@@ -135,9 +136,9 @@ public class PEP3T_3_JCR {
 
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,8 +149,9 @@ public class PEP3T_3_JCR {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Indica la posición dentro del documento: ");
         int posicion = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.print("Introduce el título de la película:");
+        System.out.print("\nIntroduce el título de la película:");
         String titulo = scanner.nextLine();
         System.out.print("Introduce el guionista de la película:");
         String guionista = scanner.nextLine();
@@ -185,14 +187,14 @@ public class PEP3T_3_JCR {
             nuevaPelicula.appendChild(Sinopsis);
 
             Node root = docDOM.getDocumentElement();
-            Node targetNode = root.getChildNodes().item(posicion);
+            Node targetNode = root.getChildNodes().item(posicion - 1);
             root.insertBefore(nuevaPelicula, targetNode);
 
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -241,9 +243,9 @@ public class PEP3T_3_JCR {
 
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,11 +257,11 @@ public class PEP3T_3_JCR {
         int opcion;
 
         do {
-            System.out.println("1) Modificar nodo al principio del documento");
+            System.out.println("\033[1m\n1) Modificar nodo al principio del documento");
             System.out.println("2) Modificar nodo en posiciones intermedias del documento");
             System.out.println("3) Modificar nodo al final del documento");
             System.out.println("4) Volver al menú principal");
-            System.out.print("Opción: ");
+            System.out.print("\t\t\t\tOpción: \033[0m");
             opcion = scanner.nextInt();
 
             switch (opcion) {
@@ -278,50 +280,56 @@ public class PEP3T_3_JCR {
 
     private static void modificarNodoAlPrincipio() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1) Titulo 4) Director");
-        System.out.println("2) Guionista 5) Actor");
-        System.out.println("3) Productora 6) Sinopsis");
-        System.out.println("7) Volver al menú anterior");
-        System.out.print("Opción: ");
+        System.out.println("\n1) Titulo \t\t\t\t4) Director");
+        System.out.println("2) Guionista \t\t\t5) Actor");
+        System.out.println("3) Productora \t\t\t6) Sinopsis");
+        System.out.println("\t7) Volver al menú anterior");
+        System.out.print("\t\t\t\tOpción: ");
         int opcion = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.print("Introduce el nuevo valor: ");
-        String newValue = scanner.nextLine();
+        if (opcion < 1 || opcion > 7) {
+            System.out.println("Opción no válida. Por favor, selecciona una opción del 1 al 7.");
+            modificarNodoAlPrincipio();
+        }
+        if (opcion == 7) {
+            return;
+        }
+
+        System.out.print("\nIntroduce el nuevo valor: ");
+        String nuevoValor = scanner.nextLine();
 
         Node root = docDOM.getDocumentElement();
         Node pelicula = root.getFirstChild();
-        Element peliculaElement = (Element) pelicula;
+        Element peliculaElemento = (Element) pelicula;
 
         switch (opcion) {
             case 1:
-                peliculaElement.getElementsByTagName("titulo").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("titulo").item(0).setTextContent(nuevoValor);
                 break;
             case 2:
-                peliculaElement.getElementsByTagName("guionista").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("guionista").item(0).setTextContent(nuevoValor);
                 break;
             case 3:
-                peliculaElement.getElementsByTagName("productora").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("productora").item(0).setTextContent(nuevoValor);
                 break;
             case 4:
-                peliculaElement.getElementsByTagName("director").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("director").item(0).setTextContent(nuevoValor);
                 break;
             case 5:
-                peliculaElement.getElementsByTagName("actor").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("actor").item(0).setTextContent(nuevoValor);
                 break;
             case 6:
-                peliculaElement.getElementsByTagName("sinopsis").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("sinopsis").item(0).setTextContent(nuevoValor);
                 break;
-            case 7:
-                return;
         }
 
         try {
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -330,62 +338,76 @@ public class PEP3T_3_JCR {
 
     private static void modificarNodoEnPosicionesIntermedias() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Indica el título de la película: ");
+        System.out.print("\nIndica el título de la película: ");
         String tituloBuscado = scanner.nextLine();
-
-        System.out.println("1) Titulo 4) Director");
-        System.out.println("2) Guionista 5) Actor");
-        System.out.println("3) Productora 6) Sinopsis");
-        System.out.println("7) Volver al menú anterior");
-        System.out.print("Opción: ");
-        int dato = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Introduce el nuevo valor: ");
-        String newValue = scanner.nextLine();
 
         Node root = docDOM.getDocumentElement();
         NodeList peliculas = root.getChildNodes();
 
+        boolean encontrado = false;
         for (int i = 0; i < peliculas.getLength(); i++) {
             Node pelicula = peliculas.item(i);
-            Element peliculaElement = (Element) pelicula;
-            String titulo = peliculaElement.getElementsByTagName("titulo").item(0).getTextContent();
+            Element peliculaElemento = (Element) pelicula;
+            String titulo = peliculaElemento.getElementsByTagName("titulo").item(0).getTextContent();
+
 
             if (titulo.equals(tituloBuscado)) {
-                switch (dato) {
+
+                System.out.println("\n1) Titulo \t\t\t\t4) Director");
+                System.out.println("2) Guionista \t\t\t5) Actor");
+                System.out.println("3) Productora \t\t\t6) Sinopsis");
+                System.out.println("\t7) Volver al menú anterior");
+                System.out.print("\t\t\t\tOpción: ");
+                int opcion = scanner.nextInt();
+                scanner.nextLine();
+
+                if (opcion < 1 || opcion > 7) {
+                    System.out.println("Opción no válida. Por favor, selecciona una opción del 1 al 7.");
+                    modificarNodoEnPosicionesIntermedias();
+                }
+                if (opcion == 7) {
+                    return;
+                }
+
+                System.out.print("\nIntroduce el nuevo valor: ");
+                String nuevoValor = scanner.nextLine();
+
+                switch (opcion) {
                     case 1:
-                        peliculaElement.getElementsByTagName("titulo").item(0).setTextContent(newValue);
+                        peliculaElemento.getElementsByTagName("titulo").item(0).setTextContent(nuevoValor);
                         break;
                     case 2:
-                        peliculaElement.getElementsByTagName("guionista").item(0).setTextContent(newValue);
+                        peliculaElemento.getElementsByTagName("guionista").item(0).setTextContent(nuevoValor);
                         break;
                     case 3:
-                        peliculaElement.getElementsByTagName("productora").item(0).setTextContent(newValue);
+                        peliculaElemento.getElementsByTagName("productora").item(0).setTextContent(nuevoValor);
                         break;
                     case 4:
-                        peliculaElement.getElementsByTagName("director").item(0).setTextContent(newValue);
+                        peliculaElemento.getElementsByTagName("director").item(0).setTextContent(nuevoValor);
                         break;
                     case 5:
-                        peliculaElement.getElementsByTagName("actor").item(0).setTextContent(newValue);
+                        peliculaElemento.getElementsByTagName("actor").item(0).setTextContent(nuevoValor);
                         break;
                     case 6:
-                        peliculaElement.getElementsByTagName("sinopsis").item(0).setTextContent(newValue);
+                        peliculaElemento.getElementsByTagName("sinopsis").item(0).setTextContent(nuevoValor);
                         break;
-                    case 7:
-                        return;
                 }
                 break;
+            }
+            if(!encontrado) {
+                System.out.println("La película con el título " + tituloBuscado + " no existe.");
+                modificarNodoEnPosicionesIntermedias();
+                return;
             }
         }
 
         try {
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
-            System.out.println("El nodo ha sido modificado correctamente.");
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -393,51 +415,57 @@ public class PEP3T_3_JCR {
 
     private static void modificarNodoAlFinal() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1) Titulo 4) Director");
-        System.out.println("2) Guionista 5) Actor");
-        System.out.println("3) Productora 6) Sinopsis");
-        System.out.println("7) Volver al menú anterior");
-        System.out.print("Opción: ");
+        System.out.println("\n1) Titulo \t\t\t\t4) Director");
+        System.out.println("2) Guionista \t\t\t5) Actor");
+        System.out.println("3) Productora \t\t\t6) Sinopsis");
+        System.out.println("\t7) Volver al menú anterior");
+        System.out.print("\t\t\t\tOpción: ");
         int opcion = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        scanner.nextLine();
 
-        System.out.print("Introduce el nuevo valor: ");
-        String newValue = scanner.nextLine();
+        if (opcion < 1 || opcion > 7) {
+            System.out.println("Opción no válida. Por favor, selecciona una opción del 1 al 7.");
+            modificarNodoAlFinal();
+        }
+        if (opcion == 7) {
+            return;
+        }
+
+        System.out.print("\nIntroduce el nuevo valor: ");
+        String nuevoValor = scanner.nextLine();
 
         Node root = docDOM.getDocumentElement();
         Node pelicula = root.getLastChild();
-        Element peliculaElement = (Element) pelicula;
+        Element peliculaElemento = (Element) pelicula;
 
         switch (opcion) {
             case 1:
-                peliculaElement.getElementsByTagName("titulo").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("titulo").item(0).setTextContent(nuevoValor);
                 break;
             case 2:
-                peliculaElement.getElementsByTagName("guionista").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("guionista").item(0).setTextContent(nuevoValor);
                 break;
             case 3:
-                peliculaElement.getElementsByTagName("productora").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("productora").item(0).setTextContent(nuevoValor);
                 break;
             case 4:
-                peliculaElement.getElementsByTagName("director").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("director").item(0).setTextContent(nuevoValor);
                 break;
             case 5:
-                peliculaElement.getElementsByTagName("actor").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("actor").item(0).setTextContent(nuevoValor);
                 break;
             case 6:
-                peliculaElement.getElementsByTagName("sinopsis").item(0).setTextContent(newValue);
+                peliculaElemento.getElementsByTagName("sinopsis").item(0).setTextContent(nuevoValor);
                 break;
-            case 7:
-                return;
         }
 
         try {
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
-            System.out.println("El nodo ha sido modificado correctamente.");
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -448,11 +476,11 @@ public class PEP3T_3_JCR {
         int opcion;
 
         do {
-            System.out.println("1) Eliminar nodo al principio del documento");
+            System.out.println("\033[1m\n1) Eliminar nodo al principio del documento");
             System.out.println("2) Eliminar nodo en posiciones intermedias del documento");
             System.out.println("3) Eliminar nodo al final del documento");
             System.out.println("4) Volver al menú principal");
-            System.out.print("Opción: ");
+            System.out.print("\t\t\t\tOpción: \033[0m");
             opcion = scanner.nextInt();
 
             switch (opcion) {
@@ -477,9 +505,10 @@ public class PEP3T_3_JCR {
         try {
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -487,30 +516,38 @@ public class PEP3T_3_JCR {
 
     private static void eliminarNodoEnPosicionesIntermedias() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Indica el título de la película: ");
+        System.out.print("\nIndica el título de la película: ");
         String tituloBuscado = scanner.nextLine();
 
         Node root = docDOM.getDocumentElement();
         NodeList peliculas = root.getChildNodes();
 
+        boolean encontrado = false;
         for (int i = 0; i < peliculas.getLength(); i++) {
             Node pelicula = peliculas.item(i);
-            Element peliculaElement = (Element) pelicula;
-            String titulo = peliculaElement.getElementsByTagName("titulo").item(0).getTextContent();
+            Element peliculaElemento = (Element) pelicula;
+            String titulo = peliculaElemento.getElementsByTagName("titulo").item(0).getTextContent();
 
             if (titulo.equals(tituloBuscado)) {
                 root.removeChild(pelicula);
+                encontrado = true;
                 break;
             }
+        }
+
+        if (!encontrado) {
+            System.out.println("La película con el título " + tituloBuscado + " no existe.");
+            eliminarNodoEnPosicionesIntermedias();
+            return;
         }
 
         try {
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
-            System.out.println("El nodo ha sido eliminado correctamente.");
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -518,16 +555,16 @@ public class PEP3T_3_JCR {
 
     private static void eliminarNodoAlFinal() {
         Node root = docDOM.getDocumentElement();
-        Node lastChild = root.getLastChild();
-        root.removeChild(lastChild);
+        Node ultimo = root.getLastChild();
+        root.removeChild(ultimo);
 
         try {
             TransformerFactory factoriaTransf = TransformerFactory.newInstance();
             Transformer transformador = factoriaTransf.newTransformer();
-            DOMSource source = new DOMSource(docDOM);
-            StreamResult result = new StreamResult(new File("src/peliculas.xml"));
-            transformador.transform(source, result);
-            System.out.println("El nodo ha sido eliminado correctamente.");
+            DOMSource fuenteDOM = new DOMSource(docDOM);
+            StreamResult resulFinal = new StreamResult(new File("src/peliculas.xml"));
+            transformador.transform(fuenteDOM, resulFinal);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
